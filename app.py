@@ -1,32 +1,11 @@
-import requests
-from bs4 import BeautifulSoup
-
-# Function to fetch text from a GitHub text file
-def fetch_github_text_file(url):
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.text
-    else:
-        return "Error fetching the file from GitHub."
-
-# Function to fetch text from a webpage
-def fetch_webpage_text(url):
-    response = requests.get(url)
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.text, 'html.parser')
-        paragraphs = soup.find_all('p')
-        text = ' '.join([para.get_text() for para in paragraphs])
-        return text
-    else:
-        return "Error fetching the webpage."
 import streamlit as st
 import requests
 from bs4 import BeautifulSoup
 
-# Replace 'YOUR_API_KEY' with your actual Gemini API key
-API_KEY = 'AIzaSyCwnAwyCBoRSe-2LaTJDqx4hQw1RbkQjAA'
-GITHUB_URL = 'https://github.com/MEADecarb/chat/blob/main/incentives.txt'  # Replace with the actual GitHub raw URL
-WEBPAGE_URL = 'https://energy.maryland.gov/Pages/default.aspx'
+# Fetch the API key from Streamlit secrets
+API_KEY = st.secrets["default"]["api_key"]
+GITHUB_URL = 'https://raw.githubusercontent.com/your-username/your-repo/main/your-file.txt'  # Replace with the actual GitHub raw URL
+WEBPAGE_URL = 'https://mea.maryland.gov'
 
 # Function to fetch text from a GitHub text file
 def fetch_github_text_file(url):
