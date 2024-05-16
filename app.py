@@ -36,8 +36,6 @@ github_text = fetch_github_text_file(GITHUB_URL)
 
 # Streamlit app
 st.title("Chatbot with Gemini API")
-st.write("### GitHub Text File Content")
-st.write(github_text)
 
 # Chatbot interaction
 st.write("### Chat with the Bot")
