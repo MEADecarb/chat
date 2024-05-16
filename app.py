@@ -3,7 +3,7 @@ import requests
 
 # Fetch the API key from Streamlit secrets
 API_KEY = st.secrets["default"]["api_key"]
-GITHUB_URL = 'https://raw.githubusercontent.com/your-username/your-repo/main/your-file.txt'  # Replace with the actual GitHub raw URL
+GITHUB_URL = 'https://raw.githubusercontent.com/MEADecarb/chat/main/incentives.txt'  # Replace with the actual GitHub raw URL
 
 # Function to fetch text from a GitHub text file
 def fetch_github_text_file(url):
