@@ -1,54 +1,43 @@
 import streamlit as st
 import requests
-from bs4 import BeautifulSoup
 
 # Fetch the API key from Streamlit secrets
 API_KEY = st.secrets["default"]["api_key"]
 GITHUB_URL = 'https://raw.githubusercontent.com/your-username/your-repo/main/your-file.txt'  # Replace with the actual GitHub raw URL
-WEBPAGE_URL = 'https://mea.maryland.gov'
 
 # Function to fetch text from a GitHub text file
 def fetch_github_text_file(url):
-    response = requests.get(url)
-    if response.status_code == 200:
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
         return response.text
-    else:
-        return "Error fetching the file from GitHub."
-
-# Function to fetch text from a webpage
-def fetch_webpage_text(url):
-    response = requests.get(url)
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.text, 'html.parser')
-        paragraphs = soup.find_all('p')
-        text = ' '.join([para.get_text() for para in paragraphs])
-        return text
-    else:
-        return "Error fetching the webpage."
+    except requests.RequestException as e:
+        return f"Error fetching the file from GitHub: {e}"
 
 # Function to send a message to the Gemini API
 def send_message(message, api_key):
-    api_url = 'https://api.gemini.com/v1/your-endpoint'  # Replace with actual Gemini API endpoint
-    headers = {
-        'Authorization': f'Bearer {api_key}',
-        'Content-Type': 'application/json'
-    }
-    data = {
-        'message': message
-    }
-    response = requests.post(api_url, headers=headers, json=data)
-    return response.json()
+    try:
+        api_url = 'https://api.gemini.com/v1/your-endpoint'  # Replace with actual Gemini API endpoint
+        headers = {
+            'Authorization': f'Bearer {api_key}',
+            'Content-Type': 'application/json'
+        }
+        data = {
+            'message': message
+        }
+        response = requests.post(api_url, headers=headers, json=data)
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as e:
+        return {"reply": f"Error communicating with the API: {e}"}
 
-# Fetch data from GitHub text file and webpage
+# Fetch data from GitHub text file
 github_text = fetch_github_text_file(GITHUB_URL)
-webpage_text = fetch_webpage_text(WEBPAGE_URL)
 
 # Streamlit app
 st.title("Chatbot with Gemini API")
 st.write("### GitHub Text File Content")
 st.write(github_text)
-st.write("### Webpage Content")
-st.write(webpage_text)
 
 # Chatbot interaction
 st.write("### Chat with the Bot")
