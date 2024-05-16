@@ -17,13 +17,20 @@ def fetch_github_text_file(url):
 # Function to send a message to the Gemini API
 def send_message(message, api_key):
     try:
-        api_url = 'https://api.gemini.com/v1/your-endpoint'  # Replace with actual Gemini API endpoint
+        api_url = f'https://generativelanguage.googleapis.com/v1beta2/models/gemini-pro:generateContent?key={api_key}'
         headers = {
-            'Authorization': f'Bearer {api_key}',
             'Content-Type': 'application/json'
         }
         data = {
-            'message': message
+            "contents": [
+                {
+                    "parts": [
+                        {
+                            "text": message
+                        }
+                    ]
+                }
+            ]
         }
         response = requests.post(api_url, headers=headers, json=data)
         response.raise_for_status()
@@ -42,4 +49,4 @@ st.write("### Chat with the Bot")
 user_input = st.text_input("You:", "")
 if user_input:
     response = send_message(user_input, API_KEY)
-    st.write("Bot:", response.get('reply', 'No response'))
+    st.write("Bot:", response.get('contents', [{'parts': [{'text': 'No response'}]}])[0]['parts'][0]['text'])
