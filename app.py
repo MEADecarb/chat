@@ -21,7 +21,7 @@ def get_gemini_response(content, question):
     except Exception as e:
         return f"Error: {str(e)}"
 
-# Function to extract text from a PDF file
+# Function to extract text from a PDF file using PyMuPDF
 def extract_text_from_pdf(file):
     text = ""
     doc = fitz.open(stream=file.read(), filetype="pdf")
@@ -42,15 +42,15 @@ uploaded_file = st.file_uploader("Upload a PDF file", type="pdf")
 if uploaded_file:
     pdf_text = extract_text_from_pdf(uploaded_file)
     st.write("PDF successfully loaded.")
-    
+
     input_text = st.text_input("Ask a question about the PDF content:", key="input")
     submit = st.button("Ask the question")
-    
+
     if submit and input_text:
         response = get_gemini_response(pdf_text, input_text)
-        
+
         st.session_state['chat_history'].append(("You", input_text))
-        
+
         st.subheader("The Response is")
         if isinstance(response, str) and response.startswith("Error:"):
             st.write(response)
@@ -60,9 +60,9 @@ if uploaded_file:
                 response_text += chunk.text
             st.write(response_text)
             st.session_state['chat_history'].append(("Bot", response_text))
-    
+
     st.subheader("The Chat History is")
-    for role, text in st.session_state['chat_history']:
+    for role, text in st.session_text['chat_history']:
         st.write(f"{role}: {text}")
 
 else:
