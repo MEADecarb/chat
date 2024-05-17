@@ -1,97 +1,38 @@
-import os
-from dotenv import load_dotenv
 import streamlit as st
-import vertexai
-from vertexai.preview.generative_models import GenerativeModel
-from langchain.chains import ConversationChain
-from langchain.memory import ConversationBufferMemory
-from typing import Any, List, Mapping, Optional
-from langchain.callbacks.manager import CallbackManagerForLLMRun
-from langchain_core.language_models.llms import LLM
-from vertexai.preview.generative_models import GenerativeModel
+import google.generativeai as genai
 
+# Configure genai with the API key from Streamlit secrets
+genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 
-class GeminiProLLM(LLM):
-    @property
-    def _llm_type(self) -> str:
-        return "gemini-pro"
+## Function to load Gemini Pro model and get responses
+model = genai.GenerativeModel("gemini-pro")
+chat = model.start_chat(history=[])
 
-    def _call(
-        self,
-        prompt: str,
-        stop: Optional[List[str]] = None,
-        run_manager: Optional[CallbackManagerForLLMRun] = None,
-        **kwargs: Any,
-    ) -> str:
-        if stop is not None:
-            raise ValueError("stop kwargs are not permitted.")
-        
-        gemini_pro_model = GenerativeModel("gemini-pro")
+def get_gemini_response(question):
+    response = chat.send_message(question, stream=True)
+    return response
 
-        
-        model_response = gemini_pro_model.generate_content(
-            prompt, 
-            generation_config={"temperature": 0.1}
-        )
-        print(model_response)
+## Initialize our Streamlit app
+st.set_page_config(page_title="Q&A Demo")
 
-        if len(model_response.candidates[0].content.parts) > 0:
-            return model_response.candidates[0].content.parts[0].text
-        else:
-            return "<No answer given by Gemini Pro>"
+st.header("Gemini LLM Application")
 
-    @property
-    def _identifying_params(self) -> Mapping[str, Any]:
-        """Get the identifying parameters."""
-        return {"model_id": "gemini-pro", "temperature": 0.1}
+# Initialize session state for chat history if it doesn't exist
+if 'chat_history' not in st.session_state:
+    st.session_state['chat_history'] = []
 
+input = st.text_input("Input: ", key="input")
+submit = st.button("Ask the question")
 
-# Initialize Vertex AI
-load_dotenv()
-project_name = os.getenv("VERTEXAI_PROJECT")
-vertexai.init(project=project_name)
+if submit and input:
+    response = get_gemini_response(input)
+    # Add user query and response to session state chat history
+    st.session_state['chat_history'].append(("You", input))
+    st.subheader("The Response is")
+    for chunk in response:
+        st.write(chunk.text)
+        st.session_state['chat_history'].append(("Bot", chunk.text))
 
-# Setting page title and header
-st.set_page_config(page_title="Gemini Pro Chatbot", page_icon=":robot_face:")
-st.markdown("<h1 style='text-align: center;'>Gemini Pro Chatbot</h1>", unsafe_allow_html=True)
-
-# Load chat model
-@st.cache_resource
-def load_chain():
-    # llm = ChatVertexAI(model_name="chat-bison@002")
-    llm = GeminiProLLM()
-    memory = ConversationBufferMemory()
-    chain = ConversationChain(llm=llm, memory=memory)
-    return chain
-
-chatchain = load_chain()
-
-# Initialise session state variables
-if 'messages' not in st.session_state:
-    st.session_state['messages'] = []
-
-st.sidebar.title("Sidebar")
-clear_button = st.sidebar.button("Clear Conversation", key="clear")
-
-# Reset conversation
-if clear_button:
-    st.session_state['messages'] = []
-
-# Display previous messages
-for message in st.session_state['messages']:
-    role = message["role"]
-    content = message["content"]
-    with st.chat_message(role):
-        st.markdown(content)
-
-# Chat input
-prompt = st.chat_input("You:")
-if prompt:
-    st.session_state['messages'].append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
-        st.markdown(prompt)
-
-    response = chatchain(prompt)["response"]
-    st.session_state['messages'].append({"role": "assistant", "content": response})
-    with st.chat_message("assistant"):
-        st.markdown(response)
+st.subheader("The Chat History is")
+for role, text in st.session_state['chat_history']:
+    st.write(f"{role}: {text}")
