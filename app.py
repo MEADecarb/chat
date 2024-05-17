@@ -12,6 +12,7 @@ genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 model = genai.GenerativeModel("gemini-pro")
 chat = model.start_chat(history=[])
 
+
 # Function to get responses from the Gemini model
 def get_gemini_response(content, question):
     combined_input = f"Content: {content}\nQuestion: {question}"
@@ -21,6 +22,7 @@ def get_gemini_response(content, question):
     except Exception as e:
         return f"Error: {str(e)}"
 
+
 # Function to extract text from a PDF file using PyMuPDF
 def extract_text_from_pdf(file):
     text = ""
@@ -29,11 +31,13 @@ def extract_text_from_pdf(file):
         text += page.get_text()
     return text
 
+
 # Initialize the Streamlit app
 st.set_page_config(page_title="PDF Q&A Demo")
 
 st.header("Chat with a PDF")
 
+# Option to remove Chat History functionality (comment the following block)
 if 'chat_history' not in st.session_state:
     st.session_state['chat_history'] = []
 
@@ -49,6 +53,7 @@ if uploaded_file:
     if submit and input_text:
         response = get_gemini_response(pdf_text, input_text)
 
+        # Store chat history (comment out if not needed)
         st.session_state['chat_history'].append(("You", input_text))
 
         st.subheader("The Response is")
@@ -59,11 +64,11 @@ if uploaded_file:
             for chunk in response:
                 response_text += chunk.text
             st.write(response_text)
-            st.session_state['chat_history'].append(("Bot", response_text))
 
-    st.subheader("The Chat History is")
-    for role, text in st.session_text['chat_history']:
-        st.write(f"{role}: {text}")
+# Option to remove Chat History functionality (comment the following block)
+# st.subheader("The Chat History is")
+# for role, text in st.session_state['chat_history']:
+#     st.write(f"{role}: {text}")
 
 else:
     st.write("Please upload a PDF file to start chatting with its content.")
