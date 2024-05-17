@@ -1,0 +1,142 @@
+## intent:greet
+- hello
+- hi
+- hey
+- good morning
+- good evening
+- hello there
+- hi there
+- hey there
+- greetings
+- howdy
+- hi everyone
+- good day
+- how's it going?
+- what's up?
+- hey!
+- hi!
+- how are you?
+- hello!
+- hey there!
+- hi there!
+
+## intent:ask_info
+- Tell me about energy programs
+- What initiatives are available for energy efficiency?
+- Can you give me details about the solar energy programs?
+- What energy savings programs do you have?
+- What programs are available for renewable energy?
+- How can I save on my energy bills?
+- What incentives are there for solar installations?
+- Can you explain the energy efficiency rebates?
+- What grants are available for energy projects?
+- What funding opportunities do you offer for energy improvements?
+- Are there any programs for electric vehicles?
+- What support is there for community solar projects?
+- How can I participate in the energy efficiency program?
+- What are the requirements for the solar energy grant?
+- What is the process to apply for an energy rebate?
+- Do you have any energy assistance programs?
+- What are the benefits of the energy efficiency programs?
+- Can you tell me more about the energy loan program?
+- Are there any incentives for businesses to go green?
+- What resources are available for energy conservation?
+- Can you provide information about the EmPOWER Maryland program?
+- How do I apply for energy assistance?
+- What are the current energy initiatives in Maryland?
+- What is the goal of the Maryland Energy Administration?
+- How does the Solar Renewable Energy Credit program work?
+- Are there any rebates for energy-efficient appliances?
+- What is the Clean Energy Grant Program?
+- Can you tell me about the Commercial Clean Energy Rebate Program?
+- What is the Jane E. Lawton Conservation Loan Program?
+- Are there any residential energy efficiency programs?
+- What are the benefits of participating in energy programs?
+- Can you provide details on the Alternative Fuel Infrastructure Program?
+- How do I qualify for the Residential Clean Energy Grant Program?
+- What types of renewable energy projects are supported?
+- Can I get funding for energy storage systems?
+- What is the role of the Maryland Energy Administration?
+- How can I reduce my carbon footprint with your programs?
+- Are there any initiatives for improving home insulation?
+- What are the benefits of using solar panels?
+- Can businesses apply for energy efficiency grants?
+- How do I contact the Maryland Energy Administration for more information?
+- Are there programs for upgrading HVAC systems?
+- What is the process to receive a solar grant?
+- Can I receive support for installing wind turbines?
+- What are the financial benefits of the energy programs?
+- Can you tell me about the Maryland Smart Energy Communities program?
+- Are there any incentives for installing geothermal systems?
+- How can I make my home more energy-efficient?
+- What programs are available for low-income households?
+- Can I get a rebate for energy-efficient windows?
+- What is the Solar Canopy Grant Program?
+- Are there any programs for agricultural energy efficiency?
+- How do I apply for the Commercial Clean Energy Rebate Program?
+- What support is available for energy audits?
+- Can I receive funding for energy storage projects?
+- What are the eligibility criteria for the energy loan program?
+- Are there any programs for battery storage systems?
+- How does the Community Solar Pilot Program work?
+- Can you provide details on the Home Performance with ENERGY STAR program?
+- What are the benefits of the Energy Performance Contracting program?
+- Are there any incentives for energy-efficient lighting?
+- How do I get started with solar energy for my home?
+- What resources are available for understanding my energy usage?
+- Are there any programs specifically for schools?
+- Can you help me find an energy auditor?
+- What is the Maryland Energy Infrastructure Program?
+- Are there any grants for small businesses to improve energy efficiency?
+- What types of projects are eligible for the Clean Energy Grant Program?
+- Can I receive assistance with energy efficiency upgrades for my home?
+- Are there any programs for reducing industrial energy use?
+- What are the steps to apply for an energy grant?
+- How does the Maryland Energy Administration support clean transportation?
+- Can you explain the Maryland Energy Assistance Program (MEAP)?
+- What are the benefits of switching to LED lighting?
+- Are there any programs for multi-family buildings?
+- How do I know if I'm eligible for energy efficiency rebates?
+- What is the focus of the Maryland Energy Administration's initiatives?
+- Are there any programs for improving building insulation?
+- Can I get financial help for installing an electric vehicle charger?
+- What is the process for receiving a residential energy efficiency rebate?
+- Are there any educational resources about energy conservation?
+- How does the Maryland Solar Co-op program work?
+- What incentives are available for energy-efficient home improvements?
+- Are there any grants for community energy projects?
+- How can I participate in the energy conservation programs?
+- What are the benefits of joining the Clean Energy Communities program?
+- Can I get a rebate for installing a heat pump?
+- Are there any programs to help with energy costs during winter?
+- How does the Maryland Energy Administration promote renewable energy?
+- What types of energy efficiency upgrades are eligible for rebates?
+- Are there any programs for water heating efficiency?
+- How can I find out more about energy saving tips?
+- Are there any rebates for upgrading my home's heating system?
+- What is the Maryland Offshore Wind Program?
+- Can you explain the Maryland Clean Energy Center's initiatives?
+- Are there any grants for non-profits to improve energy efficiency?
+- How do I participate in the Clean Energy Communities Low-to-Moderate Income Grant Program?
+- What are the benefits of using geothermal energy?
+- Are there any incentives for energy-efficient new construction?
+- How can I learn about my energy consumption patterns?
+- What is the Maryland Smart Energy Home program?
+- Are there any programs for reducing peak energy demand?
+- How can businesses benefit from energy efficiency programs?
+- Can I receive rebates for energy-efficient appliances?
+- What are the key focus areas of the Maryland Energy Administration?
+- Are there any programs for sustainable building design?
+- How does the Maryland Energy Administration support innovation in energy?
+
+## intent:goodbye
+- goodbye
+- bye
+- see you later
+- have a nice day
+- take care
+- see you soon
+- talk to you later
+- farewell
+- bye-bye
+- catch you later
