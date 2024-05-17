@@ -1,25 +1,21 @@
 import streamlit as st
-import openai
+import google.generativeai as genai
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 
-# Configure OpenAI with the API key from Streamlit secrets
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+# Configure genai with the API key from Streamlit secrets
+genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 
-def get_gpt_response(content, question):
+# Function to load Gemini Pro model and get responses
+def get_gemini_response(content, question):
     combined_input = f"Content: {content}\nQuestion: {question}"
     try:
-        response = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=combined_input,
-            max_tokens=150,
-            n=1,
-            stop=None,
-            temperature=0.7,
-        )
-        return response.choices[0].text.strip()
-    except openai.error.InvalidRequestError as e:
+        response = chat.send_message(combined_input, stream=True)
+        return response
+    except genai.BlockedPromptException as e:
+        return f"Error: Blocked prompt - {str(e)}"
+    except Exception as e:
         return f"Error: {str(e)}"
 
 def scrape_webpage(url):
@@ -58,13 +54,19 @@ if submit and input_text:
     for url in urls:
         all_content += scrape_webpage(url) + "\n"
     
-    response = get_gpt_response(all_content, input_text)
+    response = get_gemini_response(all_content, input_text)
     
     st.session_state['chat_history'].append(("You", input_text))
     
     st.subheader("The Response is")
-    st.write(response)
-    st.session_state['chat_history'].append(("Bot", response))
+    if isinstance(response, str) and response.startswith("Error:"):
+        st.write(response)
+    else:
+        response_text = ""
+        for chunk in response:
+            response_text += chunk.text
+        st.write(response_text)
+        st.session_state['chat_history'].append(("Bot", response_text))
 
 st.subheader("The Chat History is")
 for role, text in st.session_state['chat_history']:
