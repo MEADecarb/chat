@@ -7,23 +7,27 @@ from urllib.parse import urljoin
 # Configure genai with the API key from Streamlit secrets
 genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 
-# Function to load Gemini Pro model and get responses
+# Start a chat session with the Gemini model
+model = genai.GenerativeModel("gemini-pro")
+chat = model.start_chat(history=[])
+
+# Function to get responses from the Gemini model
 def get_gemini_response(content, question):
     combined_input = f"Content: {content}\nQuestion: {question}"
     try:
         response = chat.send_message(combined_input, stream=True)
         return response
-    except genai.BlockedPromptException as e:
-        return f"Error: Blocked prompt - {str(e)}"
     except Exception as e:
         return f"Error: {str(e)}"
 
+# Function to scrape webpage content
 def scrape_webpage(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
     content = soup.get_text(separator=' ', strip=True)
     return content
 
+# Function to find all internal links in the base URL
 def find_internal_links(base_url):
     response = requests.get(base_url)
     soup = BeautifulSoup(response.content, 'html.parser')
@@ -35,7 +39,7 @@ def find_internal_links(base_url):
             links.append(full_url)
     return list(set(links))  # Remove duplicates
 
-## Initialize our Streamlit app
+# Initialize the Streamlit app
 st.set_page_config(page_title="Q&A Demo")
 
 st.header("Maryland Energy Administration Q&A")
