@@ -1,4 +1,8 @@
-streamlit
 google-generativeai
 requests
 beautifulsoup4
+urllib3  # Dependency for requests
+bs4  # Optional dependency for beautifulsoup4
+docx  # For handling docx files
+PyPDF2  # For handling PDF files
+streamlit
