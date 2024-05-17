@@ -11,14 +11,20 @@ genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 model = genai.GenerativeModel("gemini-pro")
 chat = model.start_chat(history=[])
 
-# Function to get responses from the Gemini model
+
+# Function to get responses from the Gemini model with error handling
 def get_gemini_response(content, question):
     combined_input = f"Content: {content}\nQuestion: {question}"
     try:
         response = chat.send_message(combined_input, stream=True)
         return response
     except Exception as e:
-        return f"Error: {str(e)}"
+        # Handle potential exceptions including BlockedPromptException
+        if 'BlockedPromptException' in str(e):
+            return "Your prompt seems to be blocked. Please rephrase your question."
+        else:
+            return f"Error: {str(e)}"
+
 
 # Function to scrape webpage content
 def scrape_webpage(url):
@@ -26,6 +32,7 @@ def scrape_webpage(url):
     soup = BeautifulSoup(response.content, 'html.parser')
     content = soup.get_text(separator=' ', strip=True)
     return content
+
 
 # Function to find all internal links in the base URL
 def find_internal_links(base_url):
@@ -37,9 +44,10 @@ def find_internal_links(base_url):
         full_url = urljoin(base_url, href)
         if full_url.startswith("https://energy.maryland.gov"):
             links.append(full_url)
-    return list(set(links))  # Remove duplicates
+    return list(set(links))
 
-# Initialize the Streamlit app
+
+# Streamlit app logic
 st.set_page_config(page_title="Q&A Demo")
 
 st.header("Maryland Energy Administration Q&A")
@@ -57,11 +65,11 @@ if submit and input_text:
     all_content = ""
     for url in urls:
         all_content += scrape_webpage(url) + "\n"
-    
+
     response = get_gemini_response(all_content, input_text)
-    
+
     st.session_state['chat_history'].append(("You", input_text))
-    
+
     st.subheader("The Response is")
     if isinstance(response, str) and response.startswith("Error:"):
         st.write(response)
